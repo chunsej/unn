@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>今日、なにする？</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Noto Sans JP",
+    "Hiragino Kaku Gothic ProN",
+    sans-serif;
+  background: #f7f7f5;
+  color: #222;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ====================
+   HEADER
+==================== */
+
+header {
+  height: 64px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: .04em;
+}
+
+.header-sub {
+  font-size: 12px;
+  color: #999;
+}
+
+/* ====================
+   MAIN
+==================== */
+
+main {
+  max-width: 760px;
+  margin: auto;
+  padding: 30px 18px 80px;
+}
+
+/* ====================
+   HERO
+==================== */
+
+.hero {
+  text-align: center;
+  padding: 35px 15px 25px;
+}
+
+.hero-small {
+  font-size: 12px;
+  letter-spacing: .15em;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: -.04em;
+}
+
+.hero p {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* ====================
+   RANDOM CARD
+==================== */
+
+.challenge-card {
+  background: #222;
+  color: white;
+  border-radius: 26px;
+  padding: 30px 24px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,.12);
+}
+
+.challenge-label {
+  font-size: 11px;
+  letter-spacing: .18em;
+  opacity: .55;
+}
+
+.challenge-text {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.6;
+  margin: 18px 0 25px;
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.random-button {
+  border: none;
+  background: white;
+  color: #222;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.random-button:hover {
+  transform: scale(1.04);
+}
+
+/* ====================
+   POST AREA
+==================== */
+
+.post-area {
+  margin-top: 28px;
+  background: white;
+  border-radius: 22px;
+  padding: 24px;
+  display: none;
+}
+
+.post-area.show {
+  display: block;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 0 5px;
+}
+
+.section-description {
+  color: #999;
+  font-size: 12px;
+  margin: 0 0 20px;
+}
+
+.input-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 16px 0 8px;
+}
+
+.name-input,
+.comment-input {
+  width: 100%;
+  border: 1px solid #eee;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 12px;
+  outline: none;
+}
+
+.comment-input {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.name-input:focus,
+.comment-input:focus {
+  border-color: #222;
+  background: white;
+}
+
+/* ====================
+   IMAGE
+==================== */
+
+.image-upload {
+  border: 2px dashed #ddd;
+  border-radius: 16px;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #999;
+  position: relative;
+  overflow: hidden;
+  transition: .2s;
+}
+
+.image-upload:hover {
+  border-color: #aaa;
+}
+
+.image-upload input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-content {
+  pointer-events: none;
+}
+
+.upload-icon {
+  font-size: 30px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.preview {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  display: none;
+}
+
+/* ====================
+   POST BUTTON
+==================== */
+
+.submit-button {
+  width: 100%;
+  margin-top: 20px;
+  border: none;
+  border-radius: 999px;
+  background: #222;
+  color: white;
+  padding: 15px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.submit-button:hover {
+  opacity: .85;
+}
+
+/* ====================
+   FEED
+==================== */
+
+.feed {
+  margin-top: 45px;
+}
+
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.feed-title {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.feed-count {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.post-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.post-image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  display: block;
+}
+
+.post-body {
+  padding: 18px;
+}
+
+.post-challenge {
+  display: inline-block;
+  font-size: 10px;
+  background: #f1f1ef;
+  color: #777;
+  padding: 6px 9px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.post-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.post-comment {
+  margin: 10px 0 12px;
+  line-height: 1.7;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.post-date {
+  font-size: 10px;
+  color: #aaa;
+}
+
+.empty {
+  background: white;
+  border-radius: 20px;
+  padding: 45px 20px;
+  text-align: center;
+  color: #aaa;
+  font-size: 13px;
+}
+
+/* ====================
+   MOBILE
+==================== */
+
+@media (max-width: 600px) {
+
+  header {
+    padding: 0 16px;
+  }
+
+  main {
+    padding: 20px 14px 60px;
+  }
+
+  .hero {
+    padding-top: 25px;
+  }
+
+  .hero h1 {
+    font-size: 29px;
+  }
+
+  .challenge-card {
+    border-radius: 22px;
+    padding: 26px 18px;
+  }
+
+  .challenge-text {
+    font-size: 21px;
+  }
+
+  .post-area {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+<header>
+  <div class="logo">TODAY, DO.</div>
+  <div class="header-sub">小さな行動を、シェアしよう。</div>
+</header>
+
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-small">RANDOM ACTION</div>
+
+    <h1>今日、なにする？</h1>
+
+    <p>
+      お題をひとつ選んで、実際にやってみよう。<br>
+      やってみたことを、写真や言葉で残してみてください。
+    </p>
+  </section>
+
+
+  <!-- RANDOM CHALLENGE -->
+  <section class="challenge-card">
+
+    <div class="challenge-label">
+      TODAY'S CHALLENGE
+    </div>
+
+    <div class="challenge-text" id="challengeText">
+      お題を引いてみよう。
+    </div>
+
+    <button
+      class="random-button"
+      onclick="drawChallenge()"
+    >
+      🎲 お題を引く
+    </button>
+
+  </section>
+
+
+  <!-- POST -->
+  <section
+    class="post-area"
+    id="postArea"
+  >
+
+    <h2 class="section-title">
+      やってみた！
+    </h2>
+
+    <p class="section-description">
+      実際に行動したら、みんなにシェアしよう。
+    </p>
+
+
+    <label class="input-label">
+      ニックネーム
+    </label>
+
+    <input
+      id="nameInput"
+      class="name-input"
+      type="text"
+      placeholder="例：あいり"
+      maxlength="20"
+    >
+
+
+    <label class="input-label">
+      写真
+    </label>
+
+    <div class="image-upload">
+
+      <div class="upload-content">
+        <span class="upload-icon">📷</span>
+        写真を選択<br>
+        <small>タップして写真を追加</small>
+      </div>
+
+      <img
+        id="preview"
+        class="preview"
+      >
+
+      <input
+        id="imageInput"
+        type="file"
+        accept="image/*"
+      >
+
+    </div>
+
+
+    <label class="input-label">
+      ひとこと
+    </label>
+
+    <textarea
+      id="commentInput"
+      class="comment-input"
+      maxlength="500"
+      placeholder="やってみてどうだった？"
+    ></textarea>
+
+
+    <button
+      class="submit-button"
+      onclick="submitPost()"
+    >
+      投稿する ✨
+    </button>
+
+  </section>
+
+
+  <!-- FEED -->
+  <section class="feed">
+
+    <div class="feed-header">
+
+      <div class="feed-title">
+        みんなの行動
+      </div>
+
+      <div
+        class="feed-count"
+        id="feedCount"
+      >
+        0 POSTS
+      </div>
+
+    </div>
+
+    <div id="feed"></div>
+
+  </section>
+
+</main>
+
+
+<script>
+
+/* =========================
+   お題
+========================= */
+
+const challenges = [
+
+  "空の写真を撮る",
+
+  "普段通らない道を歩く",
+
+  "誰かに「ありがとう」と伝える",
+
+  "今日一番おいしかったものを撮る",
+
+  "赤いものを3つ探す",
+
+  "いつもより10分早く家を出る",
+
+  "知らない曲を1曲聴く",
+
+  "誰かを笑わせる",
+
+  "コンビニで見たことのない商品を探す",
+
+  "5分だけ部屋を片付ける",
+
+  "今日初めて話す人に挨拶する",
+
+  "好きなものをひとつ写真に撮る",
+
+  "いつもと違う飲み物を買う",
+
+  "道端にある面白いものを探す",
+
+  "今日見つけた「かわいい」を撮る",
+
+  "最近撮った写真を1枚見返す",
+
+  "知らないお店をひとつ調べる",
+
+  "外に出て深呼吸する",
+
+  "今日の夕焼けを見る",
+
+  "誰かに褒め言葉をひとつ伝える",
+
+  "お気に入りの場所を撮る",
+
+  "今日の足元を撮る",
+
+  "普段選ばない色を選ぶ",
+
+  "新しい道をひとつ覚える",
+
+  "今日一番笑った瞬間を文章にする",
+
+  "昔好きだった曲を聴く",
+
+  "月を探す",
+
+  "雲の形を眺める",
+
+  "今日食べたものを記録する",
+
+  "いつもより丁寧に「いただきます」を言う",
+
+  "気になっていたことを5分だけ調べる",
+
+  "好きな香りを探す",
+
+  "今日の自分を一言で表す",
+
+  "誰かに小さな親切をする",
+
+  "スマホを置いて10分過ごす",
+
+  "近所の知らない場所へ行く",
+
+  "今日のベストショットを撮る",
+
+  "「最近楽しかったこと」をひとつ書く",
+
+  "自分の好きなところをひとつ書く",
+
+  "今日はじめて見たものを撮る",
+
+  "緑色のものを探す",
+
+  "お気に入りの服を着る",
+
+  "普段買わないお菓子を買う",
+
+  "今日の音をひとつ意識して聴く",
+
+  "誰かに連絡してみる",
+
+  "昔の写真を1枚選ぶ",
+
+  "今日の思い出を一言残す",
+
+  "「ありがとう」と思ったことを書く",
+
+  "今日しか撮れない写真を撮る"
+
+];
+
+
+/* =========================
+   現在のお題
+========================= */
+
+let currentChallenge = "";
+
+let selectedImage = "";
+
+
+/* =========================
+   お題を引く
+========================= */
+
+function drawChallenge() {
+
+  let newChallenge;
+
+  do {
+
+    newChallenge =
+      challenges[
+        Math.floor(
+          Math.random() * challenges.length
+        )
+      ];
+
+  } while (
+    newChallenge === currentChallenge &&
+    challenges.length > 1
+  );
+
+  currentChallenge = newChallenge;
+
+  document.getElementById(
+    "challengeText"
+  ).textContent = currentChallenge;
+
+  document.getElementById(
+    "postArea"
+  ).classList.add("show");
+
+  window.scrollTo({
+    top:
+      document.getElementById("postArea").offsetTop - 80,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================
+   写真選択
+========================= */
+
+document
+  .getElementById("imageInput")
+  .addEventListener(
+    "change",
+    function(event) {
+
+      const file =
+        event.target.files[0];
+
+      if (!file) return;
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        function(e) {
+
+          selectedImage =
+            e.target.result;
+
+          const preview =
+            document.getElementById("preview");
+
+          preview.src =
+            selectedImage;
+
+          preview.style.display =
+            "block";
+
+          document.querySelector(
+            ".upload-content"
+          ).style.display =
+            "none";
+
+        };
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+
+/* =========================
+   投稿
+========================= */
+
+function submitPost() {
+
+  if (!currentChallenge) {
+
+    alert("まずはお題を引いてください！");
+
+    return;
+
+  }
+
+
+  const name =
+    document
+      .getElementById("nameInput")
+      .value
+      .trim()
+      || "匿名";
+
+
+  const comment =
+    document
+      .getElementById("commentInput")
+      .value
+      .trim();
+
+
+  if (!comment && !selectedImage) {
+
+    alert(
+      "写真かコメントをひとつ追加してください！"
+    );
+
+    return;
+
+  }
+
+
+  const post = {
+
+    id:
+      Date.now(),
+
+    name:
+      name,
+
+    challenge:
+      currentChallenge,
+
+    comment:
+      comment,
+
+    image:
+      selectedImage,
+
+    date:
+      new Date().toLocaleString(
+        "ja-JP"
+      )
+
+  };
+
+
+  const posts =
+    JSON.parse(
+      localStorage.getItem("posts")
+    ) || [];
+
+
+  posts.unshift(post);
+
+
+  localStorage.setItem(
+    "posts",
+    JSON.stringify(posts)
+  );
+
+
+  alert("投稿しました！✨");
+
+
+  resetForm();
+
+  loadPosts();
+
+}
+
+
+/* =========================
+   フォームリセット
+========================= */
+
+function resetForm() {
+
+  document.getElementById(
+    "nameInput"
+  ).value = "";
+
+  document.getElementById(
+    "commentInput"
+  ).value = "";
+
+  document.getElementById(
+    "imageInput"
+  ).value = "";
+
+  document.getElementById(
+    "preview"
+  ).style.display = "none";
+
+  document.querySelector(
+    ".upload-content"
+  ).style.display = "block";
+
+  selectedImage = "";
+
+}
+
+
+/* =========================
+   投稿一覧
+========================= */
+
+function loadPosts() {
+
+  const feed =
+    document.getElementById("feed");
+
+  const posts =
+    JSON.parse(
+      localStorage.getItem("posts")
+    ) || [];
+
+
+  document.getElementById(
+    "feedCount"
+  ).textContent =
+    `${posts.length} POSTS`;
+
+
+  if (posts.length === 0) {
+
+    feed.innerHTML = `
+
+      <div class="empty">
+
+        まだ投稿がありません。<br><br>
+
+        最初の「やってみた！」を
+        投稿してみよう ✨
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  feed.innerHTML =
+    posts.map(post => `
+
+      <article class="post-card">
+
+        ${
+          post.image
+            ? `
+              <img
+                class="post-image"
+                src="${post.image}"
+              >
+            `
+            : ""
+        }
+
+        <div class="post-body">
+
+          <div class="post-challenge">
+            🎯 ${escapeHTML(post.challenge)}
+          </div>
+
+          <div class="post-name">
+            ${escapeHTML(post.name)}
+          </div>
+
+          ${
+            post.comment
+              ? `
+                <div class="post-comment">
+                  ${escapeHTML(post.comment)}
+                </div>
+              `
+              : ""
+          }
+
+          <div class="post-date">
+            ${post.date}
+          </div>
+
+        </div>
+
+      </article>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   XSS対策
+========================= */
+
+function escapeHTML(str) {
+
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================
+   起動
+========================= */
+
+loadPosts();
+
+</script>
+
+</body>
+</html>
